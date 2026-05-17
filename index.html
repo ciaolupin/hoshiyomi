@@ -483,7 +483,26 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--surface);color:var
       <div class="card" id="setup-card">
         <div class="ct"><span>◉</span> プロフィール設定</div>
         <div class="p-row"><div class="p-lbl">ニックネーム</div><input class="p-in" id="p-name" placeholder="例: はなこ" /></div>
-        <div class="p-row"><div class="p-lbl">生年月日</div><input class="p-in" type="date" id="p-birth" /></div>
+        <div class="p-row">
+          <div class="p-lbl">生年月日</div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px">
+            <select class="p-in" id="p-birth-y" onchange="onBirthChange()">
+              <option value="">年</option>
+            </select>
+            <select class="p-in" id="p-birth-m" onchange="onBirthChange()">
+              <option value="">月</option>
+              <option value="1">1月</option><option value="2">2月</option><option value="3">3月</option>
+              <option value="4">4月</option><option value="5">5月</option><option value="6">6月</option>
+              <option value="7">7月</option><option value="8">8月</option><option value="9">9月</option>
+              <option value="10">10月</option><option value="11">11月</option><option value="12">12月</option>
+            </select>
+            <select class="p-in" id="p-birth-d" onchange="onBirthChange()">
+              <option value="">日</option>
+            </select>
+          </div>
+          <!-- 隠しフィールド（既存コードとの互換用） -->
+          <input type="hidden" id="p-birth" />
+        </div>
         <div class="p-row"><div class="p-lbl">星座（自動検出）</div><select class="p-in" id="p-zodiac"></select></div>
         <div class="p-row"><div class="p-lbl">出生時刻（任意・出生図に使用）</div><input class="p-in" type="time" id="p-time" /></div>
         <div class="p-row"><div class="p-lbl">出生地（任意・出生図に使用）</div><input class="p-in" id="p-place" placeholder="例: 東京都" /></div>
@@ -1788,10 +1807,50 @@ function checkEpState(){
 
 // ─── 初期化 ─────────────────────────────
 document.getElementById('chat-in').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey)sendAI();});
-document.getElementById('p-birth').addEventListener('change',function(){
-  const[y,m,d]=this.value.split('-').map(Number);
-  if(m&&d)document.getElementById('p-zodiac').value=getZi(m,d);
-});
+// 年セレクトの初期化
+function initBirthSelects(){
+  const ysel=document.getElementById('p-birth-y');
+  const now=new Date().getFullYear();
+  for(let y=now;y>=1930;y--){
+    const o=document.createElement('option');
+    o.value=y;o.textContent=y+'年';
+    ysel.appendChild(o);
+  }
+  updateDaySelect();
+}
+
+// 日セレクトを月・年に応じて更新
+function updateDaySelect(){
+  const y=parseInt(document.getElementById('p-birth-y').value)||2000;
+  const m=parseInt(document.getElementById('p-birth-m').value)||1;
+  const dsel=document.getElementById('p-birth-d');
+  const cur=dsel.value;
+  // その月の最終日を計算
+  const lastDay=new Date(y,m,0).getDate();
+  dsel.innerHTML='<option value="">日</option>';
+  for(let d=1;d<=lastDay;d++){
+    const o=document.createElement('option');
+    o.value=d;o.textContent=d+'日';
+    dsel.appendChild(o);
+  }
+  // 以前選んだ日を復元
+  if(cur&&parseInt(cur)<=lastDay)dsel.value=cur;
+}
+
+function onBirthChange(){
+  updateDaySelect();
+  const y=document.getElementById('p-birth-y').value;
+  const m=document.getElementById('p-birth-m').value;
+  const d=document.getElementById('p-birth-d').value;
+  if(y&&m&&d){
+    // 隠しフィールドにYYYY-MM-DD形式でセット
+    const mm=String(m).padStart(2,'0');
+    const dd=String(d).padStart(2,'0');
+    document.getElementById('p-birth').value=`${y}-${mm}-${dd}`;
+    // 星座自動検出
+    document.getElementById('p-zodiac').value=getZi(parseInt(m),parseInt(d));
+  }
+}
 document.getElementById('dev-mode-chk').checked=devMode;
 
 if(user.name&&user.birth){
@@ -1807,9 +1866,19 @@ if(user.name&&user.birth){
   document.getElementById('p-birth').value=b.toISOString().split('T')[0];
   if(user.time)document.getElementById('p-time').value=user.time;
   if(user.place)document.getElementById('p-place').value=user.place;
+  // セレクトに日付を復元
+  if(user.birth){
+    const b=user.birth;
+    document.getElementById('p-birth-y').value=b.getFullYear();
+    document.getElementById('p-birth-m').value=b.getMonth()+1;
+    updateDaySelect();
+    document.getElementById('p-birth-d').value=b.getDate();
+    document.getElementById('p-birth').value=b.toISOString().split('T')[0];
+  }
 }
 
 populateSels();
+initBirthSelects();
 updateToday();
 updateBirthSigns();
 renderFav();

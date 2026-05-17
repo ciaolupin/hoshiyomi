@@ -1,4 +1,5 @@
 const express = require('express');
+const https = require('https');
 const app = express();
 app.use(express.json());
 
@@ -6,7 +7,7 @@ app.use(express.json());
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   if (req.method === 'OPTIONS') return res.sendStatus(200);
   next();
 });
@@ -14,32 +15,60 @@ app.use((req, res, next) => {
 // 静的ファイル配信
 app.use(express.static('.'));
 
-// 動作確認用エンドポイント
+// 動作確認
 app.get('/api/health', (req, res) => {
-  const hasKey = !!process.env.GEMINI_API_KEY;
   res.json({
     status: 'ok',
-    hasApiKey: hasKey,
-    keyPrefix: hasKey ? process.env.GEMINI_API_KEY.substring(0, 8) + '...' : 'なし',
+    hasApiKey: !!process.env.GEMINI_API_KEY,
     nodeVersion: process.version,
     time: new Date().toISOString()
   });
 });
 
-// AI エンドポイント
+// Node.js標準のhttpsモジュールでGemini APIを呼ぶ（fetchの代わり）
+function callGeminiAPI(apiKey, body) {
+  return new Promise((resolve, reject) => {
+    const bodyStr = JSON.stringify(body);
+    const options = {
+      hostname: 'generativelanguage.googleapis.com',
+      path: `/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(bodyStr),
+      },
+    };
+
+    const req = https.request(options, (res2) => {
+      let data = '';
+      res2.on('data', chunk => data += chunk);
+      res2.on('end', () => {
+        try {
+          resolve({ status: res2.statusCode, body: JSON.parse(data) });
+        } catch (e) {
+          reject(new Error('JSONパースエラー: ' + data.substring(0, 100)));
+        }
+      });
+    });
+
+    req.on('error', reject);
+    req.write(bodyStr);
+    req.end();
+  });
+}
+
+// AIエンドポイント
 app.post('/api/ai', async (req, res) => {
   const { prompt, system } = req.body;
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    console.error('GEMINI_API_KEY が設定されていません');
-    return res.status(500).json({ error: 'APIキーが設定されていません。Renderの環境変数を確認してください。' });
+    return res.status(500).json({ error: 'APIキーが未設定です' });
   }
   if (!prompt) {
     return res.status(400).json({ error: 'promptが必要です' });
   }
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
   const body = {
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
     generationConfig: { temperature: 0.9, maxOutputTokens: 400 },
@@ -49,39 +78,31 @@ app.post('/api/ai', async (req, res) => {
   }
 
   try {
-    console.log('Gemini APIを呼び出し中...');
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
+    console.log('Gemini API呼び出し中...');
+    const result = await callGeminiAPI(apiKey, body);
+    console.log('ステータス:', result.status);
 
-    const data = await response.json();
-    console.log('Gemini APIレスポンス status:', response.status);
-
-    if (!response.ok || data.error) {
-      const errMsg = data.error?.message || `HTTP ${response.status}`;
-      console.error('Gemini APIエラー:', errMsg);
-      return res.status(500).json({ error: errMsg });
+    if (result.body.error) {
+      console.error('Geminiエラー:', result.body.error.message);
+      return res.status(500).json({ error: result.body.error.message });
     }
 
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const text = result.body.candidates?.[0]?.content?.parts?.[0]?.text || '';
     if (!text) {
-      console.warn('テキストが空でした。レスポンス:', JSON.stringify(data).substring(0, 200));
-      return res.status(500).json({ error: 'AIからの応答が空でした' });
+      return res.status(500).json({ error: 'AIの応答が空でした' });
     }
 
-    console.log('成功。テキスト長:', text.length);
+    console.log('成功。文字数:', text.length);
     res.json({ text });
 
   } catch (err) {
-    console.error('fetch エラー:', err.message);
-    res.status(500).json({ error: '通信エラー: ' + err.message });
+    console.error('エラー:', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`星詠みサーバー起動 port:${PORT}`);
-  console.log('GEMINI_API_KEY:', process.env.GEMINI_API_KEY ? '設定済み ✓' : '未設定 ✗');
+  console.log('APIキー:', process.env.GEMINI_API_KEY ? '設定済み ✓' : '未設定 ✗');
 });

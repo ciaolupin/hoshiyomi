@@ -83,7 +83,7 @@ app.post('/api/ai', async (req, res) => {
 
   const body = {
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
-    generationConfig: { temperature: 0.9, maxOutputTokens: 400 }
+    generationConfig: { temperature: 0.9, maxOutputTokens: 1500 }
   };
   if (system) body.system_instruction = { parts: [{ text: system }] };
 

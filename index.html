@@ -419,6 +419,10 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--surface);color:var
     <div class="pg" id="pg-ai">
       <div class="card">
         <div class="ct"><span>✦</span> 星詠みAI相談室</div>
+        <div style="background:rgba(201,168,76,0.08);border:0.5px solid var(--border);border-radius:10px;padding:10px 13px;margin-bottom:12px;font-size:12px;line-height:1.7;color:var(--muted)">
+          <span style="color:var(--gold);font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.08em">⚠ ご利用の前に</span><br>
+          相談内容はAI処理のためGoogleのサーバーに送信されます。<strong style="color:var(--text)">氏名・住所・電話番号・学校名など個人を特定できる情報は入力しないでください。</strong>悩みの内容は「友達と喧嘩した」「進路が不安」など状況のみにとどめることをおすすめします。
+        </div>
         <div style="border-left:2px solid var(--myst);padding:6px 10px;margin-bottom:10px;font-size:13px;color:var(--muted);font-style:italic">あなたの悩みに寄り添い、星の導きで背中をそっと押します。</div>
         <div class="chips">
           <button class="chip" onclick="askQ('恋愛について相談したい')">恋愛の悩み</button>
@@ -1744,13 +1748,19 @@ async function sendAI(){
   const z=Z[user.zi];
   const userName=user.name||'あなた';
   const system=`あなたは「星詠み」という占いアプリの心に寄り添うAI相談員です。
-相談者の呼び方：「${userName}さん」または「あなた」を使う。星座名・星人名では呼ばない。
-・10代〜20代の若者の悩みに共感し、批判せず、やさしく受け止める
-・占星術・星座の視点を自然に織り交ぜる
-・100字以内で簡潔に答える。必ず句点（。）で終わること
-・途中で切れないよう短くまとめる
+
+【絶対に守るルール】
+・相談者を呼ぶときは「${userName}さん」か「あなた」のみ使う
+・「乙女座さん」「牡羊座さん」などの星座名＋さんは絶対に使わない
+・星座は占いの参考情報として使うだけで、呼びかけには使わない
+
+【返答のルール】
+・10代〜20代の若者に寄り添い、共感を示す
+・100字以内で簡潔に、必ず句点（。）で終わること
 ・最後は前向きで温かい言葉で締めくくる
-相談者の星座: ${z.n}（${z.el}のエレメント）`;
+
+相談者の名前：${userName}
+相談者の星座：${z.n}（占いの参考として使うだけ）`;
   try{
     const res=await fetch('/api/ai',{
       method:'POST',

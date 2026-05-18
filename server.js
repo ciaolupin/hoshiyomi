@@ -29,7 +29,7 @@ app.get('/api/test', async (req, res) => {
 
   const options = {
     hostname: 'generativelanguage.googleapis.com',
-    path: `/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+    path: `/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
   };
@@ -57,7 +57,7 @@ function callGemini(apiKey, body) {
     const bodyStr = JSON.stringify(body);
     const options = {
       hostname: 'generativelanguage.googleapis.com',
-      path: `/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      path: `/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(bodyStr) }
     };

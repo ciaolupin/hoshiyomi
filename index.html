@@ -790,9 +790,18 @@ async function newEp(){
 
   try{
     const z=Z[user.zi];
-    const themes=['動物と人間の心温まる出来事','子どもの純粋な行動','見知らぬ人同士の優しさ','お年寄りと若者の交流','ちょっとした親切の連鎖'];
+    const themes=['動物と人間の心温まる出来事','子どもの純粋な行動','見知らぬ人同士の優しさ','お年寄りと若者の交流','ちょっとした親切の連鎖','日常のさりげない気遣い','家族の温かいひとこま'];
     const theme=themes[Math.floor(Math.random()*themes.length)];
-    const prompt=`日本語で短い「ほっこりする実話風エピソード」を1つ、必ず最後まで完結させて書いてください。\nテーマ：${theme}\n星座：${z.n}\n条件：・80〜100字程度・実際にありそうな日常の温かい出来事・読んだ人が笑顔になれる内容・エピソード本文だけを出力・「です」「ます」調・必ず文章を最後まで書ききること`;
+    const prompt=`日本語で短い「ほっこりする実話風エピソード」を1つ、必ず最後まで完結させて書いてください。
+テーマ：${theme}
+条件：
+・80〜100字程度
+・実際にありそうな日常の温かい出来事
+・読んだ人が笑顔になれる内容
+・エピソード本文だけを出力（タイトル・説明不要）
+・「です」「ます」調
+・必ず文章を最後の句点（。）まで書ききること
+・星座・占い・特定の人物名は一切含めないこと`;
     const res=await fetch('/api/ai',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -1733,13 +1742,15 @@ async function sendAI(){
   const th=document.createElement('div');th.className='thinking';th.innerHTML='<span></span><span></span><span></span>';msgs.appendChild(th);
   msgs.scrollTop=msgs.scrollHeight;
   const z=Z[user.zi];
+  const userName=user.name||'あなた';
   const system=`あなたは「星詠み」という占いアプリの心に寄り添うAI相談員です。
+相談者の呼び方：「${userName}さん」または「あなた」を使う。星座名・星人名では呼ばない。
 ・10代〜20代の若者の悩みに共感し、批判せず、やさしく受け止める
 ・占星術・星座の視点を自然に織り交ぜる
-・必ず最後まで文章を書ききり、途中で切れないようにする
-・150〜200字程度、やさしい口調で、必ず最後の句点（。）まで書くこと
-・最後は必ず前向きで温かい言葉で締めくくる
-ユーザーの星座: ${z.n}（${z.el}のエレメント）`;
+・100字以内で簡潔に答える。必ず句点（。）で終わること
+・途中で切れないよう短くまとめる
+・最後は前向きで温かい言葉で締めくくる
+相談者の星座: ${z.n}（${z.el}のエレメント）`;
   try{
     const res=await fetch('/api/ai',{
       method:'POST',

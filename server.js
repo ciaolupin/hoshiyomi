@@ -17,49 +17,51 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', hasApiKey: !!process.env.GEMINI_API_KEY, nodeVersion: process.version, time: new Date().toISOString() });
 });
 
-// Geminiを直接テストするGETエンドポイント（ブラウザで開ける）
 app.get('/api/test', async (req, res) => {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return res.json({ error: 'APIキー未設定' });
-
-  const body = JSON.stringify({
-    contents: [{ role: 'user', parts: [{ text: 'テスト。「接続成功」とだけ答えてください。' }] }],
-    generationConfig: { maxOutputTokens: 50 }
-  });
-
-  const options = {
-    hostname: 'generativelanguage.googleapis.com',
-    path: `/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
-  };
-
-  let raw = '';
-  const req2 = https.request(options, (r) => {
-    r.on('data', c => raw += c);
-    r.on('end', () => {
-      try {
-        const d = JSON.parse(raw);
-        const text = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
-        res.json({ status: r.statusCode, text, error: d.error || null });
-      } catch(e) {
-        res.json({ parseError: e.message, raw: raw.substring(0, 300) });
-      }
-    });
-  });
-  req2.on('error', e => res.json({ connectionError: e.message }));
-  req2.write(body);
-  req2.end();
+  try {
+    const result = await callGemini(apiKey, {
+      contents: [{ role: 'user', parts: [{ text: 'テスト。「接続成功」とだけ答えてください。' }] }],
+      generationConfig: { maxOutputTokens: 50 }
+    }, 1);
+    res.json({ status: 200, text: result.body.candidates?.[0]?.content?.parts?.[0]?.text || '', error: result.body.error || null });
+  } catch(e) {
+    res.json({ error: e.message });
+  }
 });
 
-function callGemini(apiKey, body) {
+// Gemini API呼び出し（リトライ付き）
+function callGemini(apiKey, body, maxRetries = 3) {
+  return new Promise(async (resolve, reject) => {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const result = await callGeminiOnce(apiKey, body);
+        // 503は一定時間待ってリトライ
+        if (result.status === 503 && attempt < maxRetries) {
+          const wait = attempt * 3000; // 3秒、6秒と増やす
+          console.log(`503エラー。${wait/1000}秒後にリトライ (${attempt}/${maxRetries})`);
+          await new Promise(r => setTimeout(r, wait));
+          continue;
+        }
+        return resolve(result);
+      } catch(e) {
+        if (attempt === maxRetries) return reject(e);
+        await new Promise(r => setTimeout(r, attempt * 2000));
+      }
+    }
+  });
+}
+
+function callGeminiOnce(apiKey, body) {
   return new Promise((resolve, reject) => {
     const bodyStr = JSON.stringify(body);
     const options = {
       hostname: 'generativelanguage.googleapis.com',
       path: `/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(bodyStr) }
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(bodyStr) },
+      timeout: 30000
     };
     let raw = '';
     const req = https.request(options, (r) => {
@@ -70,6 +72,7 @@ function callGemini(apiKey, body) {
       });
     });
     req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('タイムアウト')); });
     req.write(bodyStr);
     req.end();
   });
@@ -88,7 +91,7 @@ app.post('/api/ai', async (req, res) => {
   if (system) body.system_instruction = { parts: [{ text: system }] };
 
   try {
-    const result = await callGemini(apiKey, body);
+    const result = await callGemini(apiKey, body, 3);
     if (result.body.error) return res.status(500).json({ error: result.body.error.message });
     const text = result.body.candidates?.[0]?.content?.parts?.[0]?.text || '';
     if (!text) return res.status(500).json({ error: '応答が空' });

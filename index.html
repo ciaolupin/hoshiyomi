@@ -1073,28 +1073,85 @@ function updateRokusei(){
     reigoBox.style.display='none';
   }
 
-  // 期間別テキスト
-  const todayMsgs=['静かに過ごすと吉の日','積極的に動くと良い日','感謝を伝えると良い日','新しいことを試す日','内省と充電の日','人との対話が鍵の日'];
+  // 今日・今月・今年で異なる内容を表示
+  // 今日：その日の具体的な行動アドバイス
+  // 今月：月間の流れとテーマ
+  // 今年：年間の大きな方向性
+
+  // 今日のアドバイス（サイクル×星人タイプの組み合わせ）
+  const todayAdvice={
+    '種子':['今日は新しい出会いや情報を積極的に取り込む日。直感で気になったことはすぐにメモして。','今日は何か一つ、新しいことを始める種を蒔く日。小さな行動が大きな実りへつながります。','今日は準備より行動。まず一歩踏み出すことで道が開けます。','今日のキーワードは「初めて」。初めて行く場所、初めて話す人を大切に。'],
+    '緑生':['今日は丁寧にコツコツ取り組む日。焦らず、今できることに集中して。','今日は人脈を育てる日。ランチや短い会話を大切にすると良い縁がつながります。','今日は学びの日。気になることを少し調べるだけで視野が広がります。','今日は土台を固める日。華やかさより確実さを選んで。'],
+    '立花':['今日はあなたの努力が目に見える形になりやすい日。積極的に発信して。','今日は自信を持って行動する日。周囲からの評価が上がっています。','今日は少し背伸びしても大丈夫。実力以上の挑戦が認められる日です。','今日は成果を人と共有する日。一人で抱え込まず、周囲に見せて。'],
+    '健弱':['今日は体に無理をさせない日。充実感はあっても疲れを溜め込まないよう。','今日は心と体のバランスを意識して。頑張りすぎず、適度に休んで。','今日は得意なことで勝負する日。無理に苦手を克服しようとしないで。','今日は自分のペースを守ることが最優先。焦りは禁物です。'],
+    '達成':['今日は思い切って行動する日！チャンスは積極的につかみに行って。','今日は決断の日。迷っていたことに答えを出すのに最適なタイミング。','今日は自分の実力を信じる日。遠慮せず、本来の力を発揮して。','今日は結果を出しやすい日。重要な仕事や大切な話は今日中に進めて。'],
+    '乱気':['今日は大きな決断より、情報収集に徹する日。焦って動かず、よく見極めて。','今日は感情に流されやすい日。重要なことは明日以降に持ち越して。','今日は変化の兆しに気づく日。違和感を大切にして、柔軟に対応して。','今日は人の意見を参考にしながら、自分の判断も信じる日。'],
+    '停止':['今日は立ち止まることが正解。動きたい気持ちを抑え、じっくり考えて。','今日は内側を整える日。部屋の片付け、心の整理、日記を書くなどが吉。','今日は焦らないことが大切。物事が進まなくても、それが今の流れです。','今日は休息を大切に。疲れを癒すことが明日の力になります。'],
+    '減退':['今日は守りの姿勢で。新しいことより、今あるものを大切に守って。','今日は人との摩擦を避け、穏やかに過ごすことが吉。','今日は無理をしない日。できないことをできないと言える勇気を持って。','今日は節約・整理・見直しをするのに良い日。不要なものを手放して。'],
+    '大殺界':['今日は慎重に。新しいことへの挑戦は避け、今あることに集中して。','今日は感情的にならず、冷静さを保つことが大切。','今日は一人の時間を大切に。内省することで大切な気づきが得られます。','今日は小さな幸せを見つける日。大きなことより身近な喜びを大切に。'],
+    '再生':['今日は少しずつ動き出す日。無理はせず、小さな一歩を踏み出して。','今日は新鮮な気持ちで取り組む日。過去を手放し、今に集中して。','今日は感謝を伝える日。支えてくれた人への一言が運気を上げます。','今日は自分らしさを取り戻す日。本当にやりたいことを思い出して。'],
+  };
+
+  const cycleName=currentCycle.name==='大殺界'?'大殺界':currentCycle.name;
+  const todayArr=todayAdvice[cycleName]||todayAdvice['種子'];
+  const todayText=todayArr[(info.starIdx+dy)%todayArr.length];
+
+  // 今月のアドバイス（月のサイクルポジションと星人タイプで内容を変える）
+  const monthThemes=['愛情・人間関係','創造・表現','仕事・目標','健康・自己管理','金運・財運','学び・成長'];
+  const monthTheme=monthThemes[(info.starIdx+now.getMonth())%6];
+  const monthAdvice={
+    '種子':`今月は【${monthTheme}】がテーマの種まき期。結果はすぐには出ませんが、今月仕込んだことが数ヶ月後に大きな実りとなります。${info.name}らしく${info.isPlus?'積極的に':'着実に'}動いて。`,
+    '緑生':`今月は【${monthTheme}】において着実な成長が見込める時期。焦らずじっくりと取り組むことで、確実に力がついてきます。${info.name}の粘り強さが活きる月です。`,
+    '立花':`今月は【${monthTheme}】で努力が形になり始める時期。周囲からの評価が上がり、チャンスが訪れやすくなります。${info.name}の本領発揮の月！`,
+    '健弱':`今月は【${monthTheme}】に力を注ぎつつ、体と心のバランスを大切に。充実感の中にも疲れが出やすい時期。${info.name}らしい丁寧さで乗り切って。`,
+    '達成':`今月は【${monthTheme}】において最大の成果が出やすい時期！積極的に行動し、チャンスをしっかりつかんで。${info.name}にとって最高の月の一つです。`,
+    '乱気':`今月は【${monthTheme}】に関して変化が起きやすい時期。大きな決断は慎重に。${info.name}の直感を信じつつ、判断は焦らず慎重に行って。`,
+    '停止':`今月は【${monthTheme}】を見直す時期。動くより立ち止まることが正解。${info.name}らしく誠実に、今あるものを丁寧に守ることが吉。`,
+    '減退':`今月は【${monthTheme}】において守りを固める時期。新しい挑戦より現状維持が賢明。${info.name}の堅実さで、嵐が過ぎるのを待って。`,
+    '大殺界':`今月も大殺界の真っ只中。【${monthTheme}】に関して大きな動きは避け、静かに過ごすことが最善です。この試練が${info.name}をより強くしています。`,
+    '再生':`今月は【${monthTheme}】において再スタートの時。少しずつ動き始めるのに最適な月。${info.name}の新しいページがゆっくり開き始めています。`,
+  };
+  const monthText=monthAdvice[cycleName]||monthAdvice['種子'];
+
+  // 今年のアドバイス（年のサイクルと星人の特性を組み合わせ）
+  const starTraits={
+    '土星人':'堅実さと誠実さを武器に',
+    '金星人':'美的センスと対人力を活かして',
+    '火星人':'情熱と行動力を全開にして',
+    '天王星人':'独創性と自由な発想で',
+    '木星人':'明るさと人との縁を大切に',
+    '水星人':'知性と柔軟なコミュニケーションで',
+  };
+  const trait=starTraits[info.name]||'持ち前の力で';
+  const pm=info.isPlus?'プラスのエネルギーで外向きに動く':'マイナスのエネルギーで内側を充実させる';
+  const yearAdvice={
+    '種子':`${currentYear}年は${info.name}（${info.pm}）にとって9年サイクルの始まりの年。${trait}、新しい分野への一歩を踏み出す絶好のタイミングです。今年蒔く種が数年後の大きな実りになります。焦らず、${pm}年にしましょう。`,
+    '緑生':`${currentYear}年は${info.name}（${info.pm}）にとって着実に力をつける年。${trait}、地道な積み重ねが来年以降の飛躍につながります。人脈を広げ、スキルを磨く年。${pm}ことが大切です。`,
+    '立花':`${currentYear}年は${info.name}（${info.pm}）にとって努力が認められ始める年。${trait}、周囲からの評価が上がります。少し背伸びした挑戦も◎。${pm}で実力を発揮して。`,
+    '健弱':`${currentYear}年は${info.name}（${info.pm}）にとって充実と消耗が共存する年。${trait}得意なことで勝負しつつ、体と心のケアを忘れずに。${pm}で、無理しすぎないことが長期的な成功のカギです。`,
+    '達成':`${currentYear}年は${info.name}（${info.pm}）にとって最大の成果が出る収穫の年！${trait}、積極果敢に動いてください。転職・起業・結婚など人生の大きな決断にも最適な年です。${pm}で全力疾走を。`,
+    '乱気':`${currentYear}年は${info.name}（${info.pm}）にとって変化の兆しが訪れる年。${trait}、新しい流れに敏感に対応して。大きな決断はしっかり見極めてから。${pm}で、変化をチャンスに変えましょう。`,
+    '停止':`${currentYear}年は${info.name}（${info.pm}）にとって立ち止まる年。${trait}、焦らず現状を整理することが最善策。来年以降の飛躍のための充電期間と捉えて。${pm}で、内側を豊かにしましょう。`,
+    '減退':`${currentYear}年は${info.name}（${info.pm}）にとって守りの年。${trait}、新しいことより今あるものを大切に。不要なものを手放す絶好の機会でもあります。${pm}で、足元を固めて。`,
+    '大殺界':`${currentYear}年は${info.name}（${info.pm}）にとって大殺界の時期。${trait}あっても、今年は慎重に。転職・引越・結婚などの大きな決断は来年以降に。${pm}で静かに過ごすことが、大殺界後の大きな飛躍につながります。`,
+    '再生':`${currentYear}年は${info.name}（${info.pm}）にとって再生の年。大殺界を乗り越えた先の新しい夜明けです。${trait}、少しずつ動き始めましょう。焦らず、${pm}で新しい自分のページを開いて。`,
+  };
+  const yearText=yearAdvice[cycleName]||yearAdvice['種子'];
+
   if(rokuseiPeriod==='today'){
     document.getElementById('rs-period-lbl').textContent='今日の運気';
-    document.getElementById('rs-yr').textContent=todayMsgs[(info.starIdx+dy)%6];
+    document.getElementById('rs-yr').textContent=currentCycle.name+(currentCycle.sakkai?' ⚠':'');
     document.getElementById('rs-text').textContent=
-      now.getMonth()+1+'月'+now.getDate()+'日の'+info.name+'（'+info.pm+'）の運勢：'+
-      currentCycle.plus+(currentCycle.sakkai?' ⚠ '+currentCycle.minus:'')+' '+pmNote;
+      now.getMonth()+1+'月'+now.getDate()+'日（'+info.name+' '+info.pm+'）\n'+todayText;
   }else if(rokuseiPeriod==='month'){
     document.getElementById('rs-period-lbl').textContent='今月の運気';
-    document.getElementById('rs-yr').textContent=currentCycle.name;
+    document.getElementById('rs-yr').textContent=currentCycle.name+(currentCycle.sakkai?' ⚠':'');
     document.getElementById('rs-text').textContent=
-      now.getMonth()+1+'月の'+info.name+'（'+info.pm+'）の運気は「'+currentCycle.name+'」。'+
-      '✦ '+currentCycle.plus+
-      (currentCycle.sakkai?' ／ ⚠ '+currentCycle.minus:'');
+      now.getMonth()+1+'月の運気：'+monthText;
   }else{
     document.getElementById('rs-period-lbl').textContent='今年の運気';
-    document.getElementById('rs-yr').textContent=currentCycle.name;
-    document.getElementById('rs-text').textContent=
-      currentYear+'年の'+info.name+'（'+info.pm+'）の運気は「'+currentCycle.name+'」。'+
-      '✦ '+currentCycle.plus+
-      (currentCycle.sakkai?' ／ ⚠ '+currentCycle.minus:'');
+    document.getElementById('rs-yr').textContent=currentCycle.name+(currentCycle.sakkai?' ⚠':'');
+    document.getElementById('rs-text').textContent=yearText;
   }
 
   // 大殺界カード

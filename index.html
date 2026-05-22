@@ -30,10 +30,10 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--surface);color:var
 .pg{position:absolute;inset:0;overflow-y:auto;padding:14px 14px 20px;display:none;-webkit-overflow-scrolling:touch}
 .pg.on{display:block}
 .nav{background:var(--card);border-top:0.5px solid var(--border);display:flex;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom)}
-.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 2px 10px;background:none;border:none;border-top:2px solid transparent;cursor:pointer;font-family:'Crimson Pro',serif}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 2px 11px;background:none;border:none;border-top:2px solid transparent;cursor:pointer;font-family:'Crimson Pro',serif}
 .nb.on{border-top-color:var(--gold)}
-.ni{font-size:19px;line-height:1}
-.nl{font-size:9px;color:var(--muted);letter-spacing:0.04em}
+.ni{font-size:21px;line-height:1}
+.nl{font-size:12px;color:var(--muted);letter-spacing:0.02em}
 .nb.on .nl{color:var(--gold)}
 .card{background:var(--card);border:0.5px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px}
 .ct{font-family:'Cinzel',serif;font-size:12px;font-weight:600;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px}
@@ -61,7 +61,7 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--surface);color:var
 .ep-text{font-size:14px;line-height:1.8;color:var(--text);font-style:italic}
 .ep-loading{text-align:center;padding:20px;color:var(--muted);font-size:13px;font-style:italic}
 .ep-acts{display:flex;gap:8px;margin-top:10px}
-.ep-btn{flex:1;padding:7px 0;border:0.5px solid var(--border);border-radius:10px;background:none;font-family:'Cinzel',serif;font-size:11px;cursor:pointer;color:var(--text);letter-spacing:0.04em}
+.ep-btn{flex:1;padding:9px 0;border:0.5px solid var(--border);border-radius:10px;background:none;font-family:'Cinzel',serif;font-size:12px;cursor:pointer;color:var(--text);letter-spacing:0.03em}
 .ep-btn.save{border-color:var(--gold);color:var(--gold)}
 .ep-btn:disabled{opacity:0.4;cursor:not-allowed}
 .ep-next-info{font-size:11px;color:var(--muted);text-align:center;margin-top:6px;font-style:italic}
@@ -83,7 +83,7 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--surface);color:var
 /* tabs */
 .tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{font-family:'Cinzel',serif;padding:5px 12px;border:0.5px solid var(--border);border-radius:20px;font-size:10px;background:none;cursor:pointer;color:var(--muted);white-space:nowrap;letter-spacing:0.05em}
+.tab{font-family:'Cinzel',serif;padding:6px 14px;border:0.5px solid var(--border);border-radius:20px;font-size:12px;background:none;cursor:pointer;color:var(--muted);white-space:nowrap;letter-spacing:0.04em}
 .tab.on{background:var(--gold);color:#1a1025;border-color:var(--gold);font-weight:600}
 /* bio */
 .bio-wrap{height:145px;margin-bottom:8px}
@@ -101,7 +101,7 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--surface);color:var
 .ks-big{font-family:'Cinzel',serif;font-size:46px;color:var(--gold);text-align:center;line-height:1;margin:5px 0}
 .ks-sub{text-align:center;font-size:13px;color:var(--muted);margin-bottom:10px}
 .period-tabs{display:flex;gap:6px;margin-bottom:12px}
-.period-tab{font-family:'Cinzel',serif;padding:5px 14px;border:0.5px solid var(--border);border-radius:20px;font-size:10px;background:none;cursor:pointer;color:var(--muted);letter-spacing:0.05em}
+.period-tab{font-family:'Cinzel',serif;padding:6px 16px;border:0.5px solid var(--border);border-radius:20px;font-size:12px;background:none;cursor:pointer;color:var(--muted);letter-spacing:0.04em}
 .period-tab.on{background:var(--gold);color:#1a1025;border-color:var(--gold);font-weight:600}
 /* matrix */
 /* 数秘術カード */
@@ -217,16 +217,7 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--surface);color:var
     <!-- 今日 -->
     <div class="pg on" id="pg-today">
 
-      <!-- 開発モード切替 -->
-      <div id="dev-mode-bar" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:8px 12px;background:var(--surface);border-radius:10px;border:0.5px solid var(--border)">
-        <span class="dev-badge">⚙ 開発モード</span>
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer">
-          <input type="checkbox" id="dev-mode-chk" style="accent-color:var(--teal)" checked>
-          ON（制限なし）
-        </label>
-      </div>
-
-      <div class="card">
+    <div class="card">
         <div class="ct"><span>☽</span> 今日の運勢</div>
         <div class="z-hero">
           <span class="z-sym" id="z-sym">♊</span>
@@ -269,7 +260,7 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--surface);color:var
           </div>
           <div class="ep-acts">
             <button class="ep-btn" id="ep-next-btn" onclick="newEp()">✦ 次のお話</button>
-            <button class="ep-btn save" id="ep-save-btn" onclick="saveEp()">♡ お気に入り</button>
+            <button class="ep-btn save" id="ep-save-btn" onclick="saveEp()">♡ お気に入りに追加</button>
           </div>
           <div class="ep-next-info" id="ep-next-info"></div>
         </div>
@@ -615,52 +606,79 @@ const KS_NUM=['一','二','三','四','五','六','七','八','九'];
 const KS_KICHI=['北・北西','南西・東北','東・北東','東南・北','中宮（全方位）','西北・西','西・西北','東北・西南','南・東南'];
 const KS_TRAITS=['感受性豊かで柔軟な適応力','堅実で努力を惜しまない誠実さ','行動力と情熱に溢れる躍動感','協調性と人を繋げるバランス感覚','変革と再生を司る強いエネルギー','品格と誠実さを持つ高い精神性','楽しさと明るさで周囲を照らす','安定と包容力ある大地のような存在','高い霊性と完成に向かう大きな志'];
 // ─── 占術データ ───────────────────────────────
-const FLIST=[
-  '今日は知的好奇心が高まる一日。新しい出会いや情報が運気を押し上げます。コミュニケーション能力が光り、周囲からの信頼も増すでしょう。',
-  '内なる声に従う時。直感が冴え、長らく悩んでいた問題の答えが見えてきます。創造的な行動が吉。',
-  '人との縁が結ばれる好機。積極的に心を開くことで思わぬ展開が生まれます。感謝の言葉を忘れずに。',
-  '過去の努力が実を結ぶ予感。焦らず、今日は静かに自分を整える時間を作りましょう。',
-  '変化の風が吹いています。柔軟に対応することで、ピンチがチャンスに変わる一日となるでしょう。',
-  '今日はあなたの魅力が輝く日。自信を持って行動すると、周囲からの反応が想像以上に良いでしょう。',
-  '小さなことに丁寧に向き合うと、大きな幸運が引き寄せられます。一つひとつを大切に。',
-  '誰かへの一言が、思わぬ形で戻ってくる日。温かい言葉を惜しまずに使いましょう。',
-  '新しいことへの挑戦が吉。少し勇気が必要でも、踏み出した一歩が大きな転機になります。',
-  '今日は感謝の気持ちを大切にする日。周囲への感謝が、あなたの運気を底上げします。',
-  '心が穏やかな日。焦らず、今この瞬間を楽しむことで、自然と良い流れが生まれます。',
-  '情報収集に最適な日。アンテナを高く張ると、大切なヒントが見つかりそうです。',
-  '人間関係が充実する予感。友人や家族との時間を大切にすると、心が豊かになります。',
-  '創造性が高まる一日。アイデアが浮かんだらすぐにメモを。後で大きな価値になるかも。',
-  '直感を信じて動く日。論理より感性を優先することで、新しい扉が開けます。',
-  '今日は休息も大切な仕事。無理せず自分のペースを守ることが、明日の活力につながります。',
-  '学びの日。新しい知識や技術を吸収するのに最適なタイミング。好奇心のまま動いて。',
-  '誠実さが光る日。真摯な態度が周囲の信頼を呼び、予想外のサポートが得られます。',
-  '自分を大切にする日。好きなことに時間を使うことで、エネルギーが満ちてきます。',
-  '行動力が増す一日。迷っていたことに踏み出すなら今日がベストタイミングです。',
-  '縁を大切にする日。久しぶりの人に連絡してみると、嬉しい再会が待っているかも。',
-  '集中力が高まる日。一つのことに没頭すると、驚くほどの成果が得られるでしょう。',
-  '自分の直感と他者の意見をうまく組み合わせると、最高の答えが見つかります。',
-  '今日は笑顔が幸運を呼ぶ日。明るい表情でいると、良い縁が引き寄せられます。',
-  '丁寧な言葉遣いが運気を上げる日。言葉一つひとつに心を込めてみましょう。',
-  '自分を信じる力が試される日。迷ったときは「大丈夫」と心の中で唱えてみて。',
-  '新しい視点を持つと景色が変わる日。いつもと違う道を歩いてみるのも吉。',
-  '感受性が豊かになる日。美しいものに触れると、心が満たされ運気も上がります。',
-  '周囲への気配りが功を奏する日。小さな親切が大きな幸運につながります。',
-  '今日は好奇心のおもむくままに動く日。計画より直感を優先すると発見があります。',
-  '言葉より行動が伝わる日。思っていることは言葉にせず、行動で示してみて。',
-  '今日は「受け取る」日。人からの好意や言葉を素直に受け取ることが大切です。',
-  '整理整頓が運気を呼ぶ日。部屋や気持ちを整えると、新しい流れが生まれます。',
-  '自然に触れると運気が上がる日。空を見上げたり、緑の近くに行くと心が軽くなります。',
-  '今日は「待つ」ことが吉。焦らずタイミングを見極めると、最高の結果が得られます。',
-  '挑戦よりも継続が力になる日。地道にやり続けていることが、今日一歩前進します。',
-];
-// 今日の運勢選択（星座×日付でシード、同じ日は同じ内容だが星座によって変わる）
+// 今日の運勢を部品の組み合わせで生成（数千パターン）
+const FORTUNE_PARTS={
+  opening:[
+    '今日は','今日こそ','この一日は','本日は','今日という日は',
+    '星の導きによると今日は','宇宙のリズムとして今日は','運気の流れとして今日は',
+  ],
+  main:[
+    '知的好奇心が高まる一日。新しい情報や出会いが運気を押し上げます。',
+    '内なる声に従う時。直感が冴え、悩んでいた問題の答えが見えてきます。',
+    '人との縁が結ばれる好機。積極的に心を開くと思わぬ展開が生まれます。',
+    '過去の努力が実を結ぶ予感。焦らず、静かに自分を整える時間を作りましょう。',
+    '変化の風が吹いています。柔軟に対応することでピンチがチャンスに変わります。',
+    'あなたの魅力が輝く日。自信を持って行動すると周囲の反応が想像以上に良いでしょう。',
+    '小さなことに丁寧に向き合うと、大きな幸運が引き寄せられます。',
+    '誰かへの一言が、思わぬ形で戻ってくる日。温かい言葉を惜しまずに使いましょう。',
+    '新しいことへの挑戦が吉。勇気を出した一歩が大きな転機になります。',
+    '感謝の気持ちを大切にする日。周囲への感謝が運気を底上げします。',
+    '心が穏やかな日。焦らず今この瞬間を楽しむことで自然と良い流れが生まれます。',
+    '情報収集に最適な日。アンテナを高く張ると大切なヒントが見つかります。',
+    '人間関係が充実する予感。友人や家族との時間を大切にすると心が豊かになります。',
+    '創造性が高まる一日。アイデアが浮かんだらすぐにメモして。後で大きな価値になるかも。',
+    '直感を信じて動く日。論理より感性を優先することで新しい扉が開けます。',
+    '休息も大切な仕事。無理せず自分のペースを守ることが明日の活力につながります。',
+    '学びの日。新しい知識を吸収するのに最適なタイミング。好奇心のまま動いて。',
+    '誠実さが光る日。真摯な態度が周囲の信頼を呼び、予想外のサポートが得られます。',
+    '自分を大切にする日。好きなことに時間を使うことでエネルギーが満ちてきます。',
+    '行動力が増す一日。迷っていたことに踏み出すなら今日がベストタイミングです。',
+    '縁を大切にする日。久しぶりの人に連絡してみると嬉しい再会が待っているかも。',
+    '集中力が高まる日。一つのことに没頭すると驚くほどの成果が得られるでしょう。',
+    '笑顔が幸運を呼ぶ日。明るい表情でいると良い縁が引き寄せられます。',
+    '丁寧な言葉遣いが運気を上げる日。言葉一つひとつに心を込めてみましょう。',
+    '新しい視点を持つと景色が変わる日。いつもと違う道を歩いてみるのも吉。',
+    '感受性が豊かになる日。美しいものに触れると心が満たされ運気も上がります。',
+    '周囲への気配りが功を奏する日。小さな親切が大きな幸運につながります。',
+    '好奇心のおもむくままに動く日。計画より直感を優先すると発見があります。',
+    '自分を信じる力が試される日。迷ったとき「大丈夫」と心の中で唱えてみて。',
+    '言葉より行動が伝わる日。思っていることは行動で示してみて。',
+    '「受け取る」日。人からの好意や言葉を素直に受け取ることが大切です。',
+    '整理整頓が運気を呼ぶ日。部屋や気持ちを整えると新しい流れが生まれます。',
+    '自然に触れると運気が上がる日。空を見上げると心が軽くなります。',
+    '「待つ」ことが吉。焦らずタイミングを見極めると最高の結果が得られます。',
+    '継続が力になる日。地道にやり続けていることが今日一歩前進します。',
+    '初心に戻ると答えが見つかる日。原点を思い出すことで道が開けます。',
+  ],
+  closing:[
+    'コミュニケーション能力が光り、周囲からの信頼も増すでしょう。',
+    '創造的な行動が吉。',
+    '感謝の言葉を忘れずに。',
+    '一歩一歩着実に進みましょう。',
+    'ピンチがチャンスに変わる一日となるでしょう。',
+    '自信を持って一歩踏み出してみて。',
+    '一つひとつを大切に。',
+    '笑顔でいることが最大のお守りです。',
+    'あなたらしさを大切に。',
+    '星がしっかりあなたを見守っています。',
+    '小さな幸せを見逃さないで。',
+    '今日という日を大切に過ごして。',
+    '良い一日になりますように。',
+    '心の声を大切に。',
+    '焦らず、あなたのペースで。',
+  ],
+};
+
 function getTodayFortune(zodiacIdx){
   const d=new Date();
   const dateKey=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
-  // 日付と星座の組み合わせでインデックスを決定（かぶらないよう工夫）
-  const seed=(dateKey*13+zodiacIdx*7)%FLIST.length;
-  return FLIST[seed];
+  // 日付と星座の組み合わせでシード生成
+  const s1=(dateKey*31+zodiacIdx*17)%FORTUNE_PARTS.opening.length;
+  const s2=(dateKey*13+zodiacIdx*7+3)%FORTUNE_PARTS.main.length;
+  const s3=(dateKey*7+zodiacIdx*23+5)%FORTUNE_PARTS.closing.length;
+  return FORTUNE_PARTS.opening[s1]+FORTUNE_PARTS.main[s2]+FORTUNE_PARTS.closing[s3];
 }
+// 組み合わせ数: 8×36×15 = 4320パターン（約12年分）
 
 // 数秘術説明
 // ─── 状態管理 ─────────────────────────────
@@ -668,7 +686,7 @@ let user={name:'',birth:null,zi:2,time:'',place:''};
 let favs=[],trash=[];
 let curEp='';
 let aiHistory=[];
-let devMode=true; // 開発モード（trueなら制限なし）
+let devMode=false; // 本番モード（制限あり）
 let kyuseiPeriod='today';
 let rokuseiPeriod='today';
 
@@ -677,7 +695,6 @@ try{
   const su=localStorage.getItem('hoshiyomi_user');if(su){user=JSON.parse(su);if(user.birth)user.birth=new Date(user.birth);}
   const sf=localStorage.getItem('hoshiyomi_favs');if(sf)favs=JSON.parse(sf);
   const st=localStorage.getItem('hoshiyomi_trash');if(st)trash=JSON.parse(st);
-  const dm=localStorage.getItem('hoshiyomi_devmode');if(dm!==null)devMode=dm==='1';
 }catch(e){}
 
 function saveStorage(){
@@ -685,7 +702,6 @@ function saveStorage(){
     localStorage.setItem('hoshiyomi_user',JSON.stringify(user));
     localStorage.setItem('hoshiyomi_favs',JSON.stringify(favs));
     localStorage.setItem('hoshiyomi_trash',JSON.stringify(trash));
-    localStorage.setItem('hoshiyomi_devmode',devMode?'1':'0');
   }catch(e){}
 }
 
@@ -845,7 +861,7 @@ function saveEp(){
   saveStorage();renderFav();
   const btn=document.getElementById('ep-save-btn');
   btn.textContent='✓ 保存しました';
-  setTimeout(()=>{btn.textContent='♡ お気に入り';},1800);
+  setTimeout(()=>{btn.textContent='♡ お気に入りに追加';},1800);
 }
 
 // ─── タロット（1日1回） ─────────────────────────────
@@ -936,14 +952,37 @@ function updateKyusei(){
 
   if(kyuseiPeriod==='today'){
     document.getElementById('ks-period-lbl').textContent='今日の運気';
-    const todayLuck=['活発な行動が吉','人との縁が鍵','情報収集が大切','静かに内省する日','変化に柔軟に対応','誠実さが光る日','新しいことを試す日','安定を大切に','直感を信じる日'];
-    document.getElementById('ks-yr').textContent=todayLuck[(hon+dy)%9];
-    document.getElementById('ks-text').textContent=now.getMonth()+1+'月'+now.getDate()+'日の運勢：'+KYUSEI[hon]+'のあなたは今日、'+['素直に行動することで運気が開けます。','人との対話から大切なヒントが得られます。','直感を信じて動くと良い流れが生まれます。','無理せず自分のペースを守ることが大切です。','変化を恐れず、新しい風に乗りましょう。','誠実さと丁寧さが周囲の信頼を呼びます。','笑顔とポジティブな言葉が幸運を引き寄せます。','焦らず着実に、土台を大切に過ごしましょう。','感性を大切に。ひらめきが宝になります。'][hon];
+    // 部品の組み合わせで大量パターン生成
+    const KS_TODAY_ACTION=[
+      ['直感を信じて行動する日','情報収集に徹する日','新しいことを始める日','人との対話を大切にする日','静かに内省する日','整理整頓が吉の日','感謝を伝える日','自分のペースで進む日','創造性を活かす日'],
+      ['素直に動くことで運気が開ける','感受性を活かすと良い流れが生まれる','言葉よりも行動で示す日','縁を大切にすると吉','立ち止まって考えると答えが見える','丁寧さが評価される日','直感より論理を信じる日','コツコツが実を結ぶ日','感謝の気持ちが運を引き寄せる'],
+    ];
+    const KS_TODAY_DETAIL=[
+      '朝のうちに重要なことを片付けると良いでしょう。','午後から運気が上昇します。積極的に動いて。','人からの連絡や情報に注目。大切なヒントが隠れています。','今日は一人より誰かと一緒に動くと力が発揮できます。','内側を整える日。瞑想や日記が効果的です。','身の回りを片付けると新しいエネルギーが入ってきます。','笑顔でいることが最大のお守り。明るく過ごして。','無理をしない日。できることに集中しましょう。','好きなことに没頭する時間を作ると運気がUPします。','直感で動いた先に予想外のチャンスが待っています。','誠実な対応が周囲の信頼を高める日です。','学んだことを実践に移すと大きな成果が生まれます。',
+    ];
+    const d1=(hon*31+dy*13)%KS_TODAY_ACTION[0].length;
+    const d2=(hon*17+dy*7)%KS_TODAY_ACTION[1].length;
+    const d3=(hon*23+dy*11+3)%KS_TODAY_DETAIL.length;
+    document.getElementById('ks-yr').textContent=KS_TODAY_ACTION[0][d1];
+    document.getElementById('ks-text').textContent=
+      now.getMonth()+1+'月'+now.getDate()+'日の運勢（'+KYUSEI[hon]+'）：'+
+      KS_TODAY_ACTION[1][d2]+'日です。'+KS_TODAY_DETAIL[d3]+
+      ['吉方位（'+KS_KICHI[hon]+'）の方向に出かけると運気が高まります。','今日は'+KYUSEI[hon]+'のエネルギーが特に強まっています。',''+KS_TRAITS[hon]+'な本質を活かした行動が吉。'][(hon+dy)%3];
   }else if(kyuseiPeriod==='month'){
     document.getElementById('ks-period-lbl').textContent='今月の運気';
-    const monthLuck=['充電期','成長期','開花期','収穫期','整理期','準備期','上昇期','安定期','変革期'];
-    document.getElementById('ks-yr').textContent=monthLuck[(hon+now.getMonth())%9];
-    document.getElementById('ks-text').textContent=now.getMonth()+1+'月の運勢：'+KYUSEI[hon]+'のあなたの今月は'+monthLuck[(hon+now.getMonth())%9]+'。'+['感謝の気持ちを大切に過ごしましょう。','人間関係が充実する月です。','実力を発揮できる機会が来ます。','これまでの努力が報われる月。','不要なものを手放すと運気UP。','次のステップへの準備を整えましょう。','積極的に動くことで道が開けます。','日常の安定の中に幸せがあります。','大胆な一歩が未来を変えます。'][hon];
+    const monthLuck=[
+      ['充電・内省の月','人脈を育てる月','アイデアが輝く月','感情を整える月','情熱を燃やす月','誠実さが報われる月','調和を大切に','深く考える月','完成に向かう月'],
+      ['成長・準備の月','信頼を深める月','表現力が光る月','安定を固める月','挑戦の月','サポートが吉の月','バランスの月','真実を見極める月','仕上げの月'],
+      ['開花・発信の月','縁が広がる月','情報収集が吉','感受性が高まる月','実力発揮の月','改善の月','人間関係が鍵','探求の月','感謝の月'],
+      ['収穫・評価の月','関係が深まる月','言葉が実を結ぶ月','守りを固める月','結果が出る月','努力が認められる月','調整の月','本質が見える月','完結の月'],
+      ['整理・見直しの月','整理と感謝の月','情報を整理する月','不要なものを手放す月','次へ向けた準備','サポート体制を整える','人間関係を整える','心の棚卸しの月','手放しと感謝の月'],
+      ['充電・準備の月','縁の準備の月','学びの月','回復の月','蓄える月','基盤を整える月','次を描く月','深める月','静かに整える月'],
+      ['上昇・動く月','人との縁が広がる月','発信が吉の月','前向きに進む月','積極的な行動を','誠実に動く月','関係が好転する月','本質を追求する月','飛躍の予感'],
+      ['安定・継続の月','信頼が増す月','地道に積む月','守りが固まる月','安定した行動を','丁寧さが光る月','バランスを保つ','深く根を張る月','安定した完成へ'],
+      ['変革・新展開の月','縁が変わる月','新しい情報が鍵','感情が変化する月','大きなエネルギー','改革の月','関係が一新する月','深い変革の月','新たな完成へ'],
+    ];
+    document.getElementById('ks-yr').textContent=monthLuck[hon][(hon+now.getMonth())%9];
+    document.getElementById('ks-text').textContent=now.getMonth()+1+'月の運勢：'+KYUSEI[hon]+'のあなたの今月は'+monthLuck[hon][(hon+now.getMonth())%9]+'。'+['感謝の気持ちを大切に過ごしましょう。水の流れのように柔軟に。','人間関係が充実する月です。誠実な言葉が縁を深めます。','実力を発揮できる機会が来ます。発信することで道が開けます。','これまでの努力が報われる月。感情を大切に丁寧に過ごして。','情熱を持って挑戦する月。大きなエネルギーを活かして動いて。','丁寧さと誠実さが光る月。細部への気配りが評価につながります。','日常の安定の中に幸せがあります。バランスを意識して過ごして。','大胆な一歩が未来を変えます。深く考えて行動する月です。','感謝と完成の月。高い志を持ちながら周囲への思いやりも大切に。'][hon];
   }else{
     document.getElementById('ks-period-lbl').textContent='今年の運気';
     document.getElementById('ks-yr').textContent=['充電','成長','飛躍','結実','整理','準備','開花','安定','変革'][hon]+'期';
@@ -1073,68 +1112,91 @@ function updateRokusei(){
     reigoBox.style.display='none';
   }
 
-  // 今日・今月・今年で異なる内容を表示
-  // 今日：その日の具体的な行動アドバイス
-  // 今月：月間の流れとテーマ
-  // 今年：年間の大きな方向性
-
-  // 今日のアドバイス（サイクル×星人タイプの組み合わせ）
-  const todayAdvice={
-    '種子':['今日は新しい出会いや情報を積極的に取り込む日。直感で気になったことはすぐにメモして。','今日は何か一つ、新しいことを始める種を蒔く日。小さな行動が大きな実りへつながります。','今日は準備より行動。まず一歩踏み出すことで道が開けます。','今日のキーワードは「初めて」。初めて行く場所、初めて話す人を大切に。'],
-    '緑生':['今日は丁寧にコツコツ取り組む日。焦らず、今できることに集中して。','今日は人脈を育てる日。ランチや短い会話を大切にすると良い縁がつながります。','今日は学びの日。気になることを少し調べるだけで視野が広がります。','今日は土台を固める日。華やかさより確実さを選んで。'],
-    '立花':['今日はあなたの努力が目に見える形になりやすい日。積極的に発信して。','今日は自信を持って行動する日。周囲からの評価が上がっています。','今日は少し背伸びしても大丈夫。実力以上の挑戦が認められる日です。','今日は成果を人と共有する日。一人で抱え込まず、周囲に見せて。'],
-    '健弱':['今日は体に無理をさせない日。充実感はあっても疲れを溜め込まないよう。','今日は心と体のバランスを意識して。頑張りすぎず、適度に休んで。','今日は得意なことで勝負する日。無理に苦手を克服しようとしないで。','今日は自分のペースを守ることが最優先。焦りは禁物です。'],
-    '達成':['今日は思い切って行動する日！チャンスは積極的につかみに行って。','今日は決断の日。迷っていたことに答えを出すのに最適なタイミング。','今日は自分の実力を信じる日。遠慮せず、本来の力を発揮して。','今日は結果を出しやすい日。重要な仕事や大切な話は今日中に進めて。'],
-    '乱気':['今日は大きな決断より、情報収集に徹する日。焦って動かず、よく見極めて。','今日は感情に流されやすい日。重要なことは明日以降に持ち越して。','今日は変化の兆しに気づく日。違和感を大切にして、柔軟に対応して。','今日は人の意見を参考にしながら、自分の判断も信じる日。'],
-    '停止':['今日は立ち止まることが正解。動きたい気持ちを抑え、じっくり考えて。','今日は内側を整える日。部屋の片付け、心の整理、日記を書くなどが吉。','今日は焦らないことが大切。物事が進まなくても、それが今の流れです。','今日は休息を大切に。疲れを癒すことが明日の力になります。'],
-    '減退':['今日は守りの姿勢で。新しいことより、今あるものを大切に守って。','今日は人との摩擦を避け、穏やかに過ごすことが吉。','今日は無理をしない日。できないことをできないと言える勇気を持って。','今日は節約・整理・見直しをするのに良い日。不要なものを手放して。'],
-    '大殺界':['今日は慎重に。新しいことへの挑戦は避け、今あることに集中して。','今日は感情的にならず、冷静さを保つことが大切。','今日は一人の時間を大切に。内省することで大切な気づきが得られます。','今日は小さな幸せを見つける日。大きなことより身近な喜びを大切に。'],
-    '再生':['今日は少しずつ動き出す日。無理はせず、小さな一歩を踏み出して。','今日は新鮮な気持ちで取り組む日。過去を手放し、今に集中して。','今日は感謝を伝える日。支えてくれた人への一言が運気を上げます。','今日は自分らしさを取り戻す日。本当にやりたいことを思い出して。'],
+  // 今日のアドバイス（部品の組み合わせで大量パターン生成）
+  const RS_ACTION_BY_CYCLE={
+    '種子':['新しいことへの一歩を踏み出す','可能性の種を蒔く','初めてのことに挑戦する','新鮮な視点で物事を見る','新しい出会いを大切にする'],
+    '緑生':['コツコツと積み重ねる','人脈を育てる','学びを深める','丁寧に基盤を作る','着実に前進する'],
+    '立花':['自信を持って発信する','実力を示す','積極的に行動する','成果をアピールする','チャンスをつかむ'],
+    '健弱':['体と心のバランスを保つ','無理をしない','得意なことで勝負する','自分のペースを守る','休息も取り入れる'],
+    '達成':['思い切って動く','決断する','全力を出し切る','大きな挑戦をする','リーダーシップを発揮する'],
+    '乱気':['情報収集に徹する','変化に柔軟に対応する','直感を大切にする','冷静に判断する','様子を見極める'],
+    '停止':['立ち止まって考える','内側を整える','焦らず待つ','じっくり休む','内省を深める'],
+    '減退':['今あるものを守る','無駄を省く','穏やかに過ごす','節約・整理をする','守りを固める'],
+    '大殺界':['慎重に行動する','小さな幸せを見つける','一人の時間を大切にする','感情を落ち着かせる','静かに過ごす'],
+    '再生':['少しずつ動き始める','感謝を伝える','新鮮な気持ちで取り組む','自分らしさを取り戻す','前を向く'],
   };
+  const RS_TIMING=[
+    '朝のうちに行動すると吉。','午後から運気が上がる予感。','夕方以降に良い流れが生まれる。',
+    '一日通じて安定した運気。','朝から積極的に動くほど運気が上がる。','夜の時間を大切に過ごして。',
+    '午前中に大切なことを片付けると◎。','気持ちの良いスタートを切ることが鍵。',
+  ];
+  const RS_PM_MSG=info.isPlus?[
+    '外向きのエネルギーを活かして積極的に動いて。',
+    '人との交流がプラスの運気を高めます。',
+    '新しいことへの挑戦がプラス運気を加速させます。',
+    '積極的な発信が良い縁を引き寄せます。',
+    '行動することで運気の扉が開きます。',
+  ]:[
+    '内側を充実させることに集中すると吉。',
+    '自分の内面と向き合う時間が力になります。',
+    '今あるものを大切にすることで安定が生まれます。',
+    '内省と充電が次の飛躍につながります。',
+    '焦らず自分のペースで進むことが吉。',
+  ];
+  const RS_CYCLE_TIP=currentCycle.sakkai?
+    ['⚠ '+currentCycle.name+'の時期。新しい挑戦は控えて、今あるものを守って。',
+     '⚠ '+currentCycle.name+'中。無理をせず、静かに過ごすことが最善。',
+     '⚠ '+currentCycle.name+'の時期。感情的にならず、冷静さを保つことが大切。']:
+    ['✦ '+currentCycle.name+'の時期。'+currentCycle.plus,
+     '✦ 今は'+currentCycle.name+'。'+currentCycle.plus,
+     '✦ '+currentCycle.name+'のエネルギーが後押し。'+currentCycle.plus];
 
   const cycleName=currentCycle.name==='大殺界'?'大殺界':currentCycle.name;
-  const todayArr=todayAdvice[cycleName]||todayAdvice['種子'];
-  const todayText=todayArr[(info.starIdx+dy)%todayArr.length];
+  const rsActions=RS_ACTION_BY_CYCLE[cycleName]||RS_ACTION_BY_CYCLE['種子'];
+  const ta=(info.starIdx*31+dy*17)%rsActions.length;
+  const tt=(info.starIdx*13+dy*11)%RS_TIMING.length;
+  const tp=(info.starIdx*7+dy*23)%RS_PM_MSG.length;
+  const tc=(info.starIdx*19+dy*13)%RS_CYCLE_TIP.length;
+  const todayText=rsActions[ta]+'日です。'+RS_TIMING[tt]+RS_PM_MSG[tp]+'\n'+RS_CYCLE_TIP[tc];
 
-  // 今月のアドバイス（月のサイクルポジションと星人タイプで内容を変える）
+  // 今月のアドバイス（月テーマ×サイクル×星人で多数パターン）
   const monthThemes=['愛情・人間関係','創造・表現','仕事・目標','健康・自己管理','金運・財運','学び・成長'];
+  const monthAction=['積極的に動いて','着実に取り組んで','本領を発揮して','バランスを大切に','全力で取り組んで','慎重に判断して','立ち止まって見直して','守りを固めて','静かに過ごして','少しずつ動き始めて'];
   const monthTheme=monthThemes[(info.starIdx+now.getMonth())%6];
+  const mAction=monthAction[currentPos%monthAction.length];
   const monthAdvice={
-    '種子':`今月は【${monthTheme}】がテーマの種まき期。結果はすぐには出ませんが、今月仕込んだことが数ヶ月後に大きな実りとなります。${info.name}らしく${info.isPlus?'積極的に':'着実に'}動いて。`,
-    '緑生':`今月は【${monthTheme}】において着実な成長が見込める時期。焦らずじっくりと取り組むことで、確実に力がついてきます。${info.name}の粘り強さが活きる月です。`,
-    '立花':`今月は【${monthTheme}】で努力が形になり始める時期。周囲からの評価が上がり、チャンスが訪れやすくなります。${info.name}の本領発揮の月！`,
-    '健弱':`今月は【${monthTheme}】に力を注ぎつつ、体と心のバランスを大切に。充実感の中にも疲れが出やすい時期。${info.name}らしい丁寧さで乗り切って。`,
-    '達成':`今月は【${monthTheme}】において最大の成果が出やすい時期！積極的に行動し、チャンスをしっかりつかんで。${info.name}にとって最高の月の一つです。`,
-    '乱気':`今月は【${monthTheme}】に関して変化が起きやすい時期。大きな決断は慎重に。${info.name}の直感を信じつつ、判断は焦らず慎重に行って。`,
-    '停止':`今月は【${monthTheme}】を見直す時期。動くより立ち止まることが正解。${info.name}らしく誠実に、今あるものを丁寧に守ることが吉。`,
-    '減退':`今月は【${monthTheme}】において守りを固める時期。新しい挑戦より現状維持が賢明。${info.name}の堅実さで、嵐が過ぎるのを待って。`,
-    '大殺界':`今月も大殺界の真っ只中。【${monthTheme}】に関して大きな動きは避け、静かに過ごすことが最善です。この試練が${info.name}をより強くしています。`,
-    '再生':`今月は【${monthTheme}】において再スタートの時。少しずつ動き始めるのに最適な月。${info.name}の新しいページがゆっくり開き始めています。`,
+    '種子':`今月は【${monthTheme}】がテーマの種まき期。結果はすぐに出ませんが、今月仕込んだことが数ヶ月後に大きな実りとなります。${info.name}らしく${mAction}。`,
+    '緑生':`今月は【${monthTheme}】において着実な成長が見込める時期。焦らずじっくり取り組むことで確実に力がつきます。${info.name}の粘り強さが活きる月。${mAction}。`,
+    '立花':`今月は【${monthTheme}】で努力が形になり始める時期。周囲からの評価が上がりチャンスが訪れやすくなります。${info.name}の本領発揮の月！${mAction}。`,
+    '健弱':`今月は【${monthTheme}】に力を注ぎつつ体と心のバランスを大切に。充実感の中にも疲れが出やすい時期。${info.name}らしい丁寧さで${mAction}。`,
+    '達成':`今月は【${monthTheme}】において最大の成果が出やすい時期！チャンスをしっかりつかんで。${info.name}にとって最高の月の一つ。${mAction}。`,
+    '乱気':`今月は【${monthTheme}】に関して変化が起きやすい時期。大きな決断は慎重に。${info.name}の直感を信じつつ${mAction}。`,
+    '停止':`今月は【${monthTheme}】を見直す時期。動くより立ち止まることが正解。${info.name}らしく誠実に${mAction}。`,
+    '減退':`今月は【${monthTheme}】において守りを固める時期。新しい挑戦より現状維持が賢明。${info.name}の堅実さで${mAction}。`,
+    '大殺界':`今月も大殺界。【${monthTheme}】に関して大きな動きは避けて。この試練が${info.name}をより強くしています。${mAction}。`,
+    '再生':`今月は【${monthTheme}】において再スタートの時。少しずつ動き始めるのに最適な月。${info.name}の新しいページが開き始めています。${mAction}。`,
   };
   const monthText=monthAdvice[cycleName]||monthAdvice['種子'];
 
-  // 今年のアドバイス（年のサイクルと星人の特性を組み合わせ）
+  // 今年のアドバイス
   const starTraits={
-    '土星人':'堅実さと誠実さを武器に',
-    '金星人':'美的センスと対人力を活かして',
-    '火星人':'情熱と行動力を全開にして',
-    '天王星人':'独創性と自由な発想で',
-    '木星人':'明るさと人との縁を大切に',
-    '水星人':'知性と柔軟なコミュニケーションで',
+    '土星人':'堅実さと誠実さを武器に','金星人':'美的センスと対人力を活かして',
+    '火星人':'情熱と行動力を全開にして','天王星人':'独創性と自由な発想で',
+    '木星人':'明るさと人との縁を大切に','水星人':'知性と柔軟なコミュニケーションで',
   };
   const trait=starTraits[info.name]||'持ち前の力で';
   const pm=info.isPlus?'プラスのエネルギーで外向きに動く':'マイナスのエネルギーで内側を充実させる';
   const yearAdvice={
-    '種子':`${currentYear}年は${info.name}（${info.pm}）にとって9年サイクルの始まりの年。${trait}、新しい分野への一歩を踏み出す絶好のタイミングです。今年蒔く種が数年後の大きな実りになります。焦らず、${pm}年にしましょう。`,
-    '緑生':`${currentYear}年は${info.name}（${info.pm}）にとって着実に力をつける年。${trait}、地道な積み重ねが来年以降の飛躍につながります。人脈を広げ、スキルを磨く年。${pm}ことが大切です。`,
+    '種子':`${currentYear}年は${info.name}（${info.pm}）にとって9年サイクルの始まりの年。${trait}、新しい分野への一歩を踏み出す絶好のタイミングです。今年蒔く種が数年後の大きな実りになります。${pm}年にしましょう。`,
+    '緑生':`${currentYear}年は${info.name}（${info.pm}）にとって着実に力をつける年。${trait}、地道な積み重ねが来年以降の飛躍につながります。人脈を広げスキルを磨く年。${pm}ことが大切です。`,
     '立花':`${currentYear}年は${info.name}（${info.pm}）にとって努力が認められ始める年。${trait}、周囲からの評価が上がります。少し背伸びした挑戦も◎。${pm}で実力を発揮して。`,
-    '健弱':`${currentYear}年は${info.name}（${info.pm}）にとって充実と消耗が共存する年。${trait}得意なことで勝負しつつ、体と心のケアを忘れずに。${pm}で、無理しすぎないことが長期的な成功のカギです。`,
+    '健弱':`${currentYear}年は${info.name}（${info.pm}）にとって充実と消耗が共存する年。${trait}得意なことで勝負しつつ体と心のケアを忘れずに。${pm}で無理しすぎないことが長期的な成功のカギです。`,
     '達成':`${currentYear}年は${info.name}（${info.pm}）にとって最大の成果が出る収穫の年！${trait}、積極果敢に動いてください。転職・起業・結婚など人生の大きな決断にも最適な年です。${pm}で全力疾走を。`,
-    '乱気':`${currentYear}年は${info.name}（${info.pm}）にとって変化の兆しが訪れる年。${trait}、新しい流れに敏感に対応して。大きな決断はしっかり見極めてから。${pm}で、変化をチャンスに変えましょう。`,
-    '停止':`${currentYear}年は${info.name}（${info.pm}）にとって立ち止まる年。${trait}、焦らず現状を整理することが最善策。来年以降の飛躍のための充電期間と捉えて。${pm}で、内側を豊かにしましょう。`,
-    '減退':`${currentYear}年は${info.name}（${info.pm}）にとって守りの年。${trait}、新しいことより今あるものを大切に。不要なものを手放す絶好の機会でもあります。${pm}で、足元を固めて。`,
-    '大殺界':`${currentYear}年は${info.name}（${info.pm}）にとって大殺界の時期。${trait}あっても、今年は慎重に。転職・引越・結婚などの大きな決断は来年以降に。${pm}で静かに過ごすことが、大殺界後の大きな飛躍につながります。`,
-    '再生':`${currentYear}年は${info.name}（${info.pm}）にとって再生の年。大殺界を乗り越えた先の新しい夜明けです。${trait}、少しずつ動き始めましょう。焦らず、${pm}で新しい自分のページを開いて。`,
+    '乱気':`${currentYear}年は${info.name}（${info.pm}）にとって変化の兆しが訪れる年。${trait}、新しい流れに敏感に対応して。大きな決断はしっかり見極めてから。${pm}で変化をチャンスに変えましょう。`,
+    '停止':`${currentYear}年は${info.name}（${info.pm}）にとって立ち止まる年。${trait}、焦らず現状を整理することが最善策。来年以降の飛躍のための充電期間と捉えて。${pm}で内側を豊かにしましょう。`,
+    '減退':`${currentYear}年は${info.name}（${info.pm}）にとって守りの年。${trait}、新しいことより今あるものを大切に。不要なものを手放す絶好の機会でもあります。${pm}で足元を固めて。`,
+    '大殺界':`${currentYear}年は${info.name}（${info.pm}）にとって大殺界の時期。${trait}あっても今年は慎重に。転職・引越・結婚などの大きな決断は来年以降に。${pm}で静かに過ごすことが大殺界後の大きな飛躍につながります。`,
+    '再生':`${currentYear}年は${info.name}（${info.pm}）にとって再生の年。大殺界を乗り越えた先の新しい夜明けです。${trait}、少しずつ動き始めましょう。焦らず${pm}で新しい自分のページを開いて。`,
   };
   const yearText=yearAdvice[cycleName]||yearAdvice['種子'];
 
@@ -1889,25 +1951,7 @@ function editProfile(){
   document.getElementById('pd-card').style.display='none';
 }
 
-// ─── 開発モード ─────────────────────────────
-document.getElementById('dev-mode-chk').addEventListener('change',function(){
-  devMode=this.checked;saveStorage();
-  if(!devMode){
-    // 本番モード：タロットと次のお話ボタンの状態を復元
-    checkTarotState();checkEpState();
-  }else{
-    // 開発モード：制限解除
-    const face=document.getElementById('tc-face');
-    face.classList.remove('used');
-    face.onclick=drawTarot;
-    document.getElementById('tc-next-info').textContent='';
-    document.getElementById('ep-next-btn').disabled=false;
-    document.getElementById('ep-next-info').textContent='';
-  }
-});
-
 function checkTarotState(){
-  if(devMode)return;
   const resetHour=new Date();resetHour.setHours(4,0,0,0);
   if(new Date().getHours()<4)resetHour.setDate(resetHour.getDate()-1);
   const lastTime=parseInt(localStorage.getItem('hoshiyomi_last_tarot')||'0');
@@ -1919,7 +1963,6 @@ function checkTarotState(){
 }
 
 function checkEpState(){
-  if(devMode)return;
   const resetHour=new Date();resetHour.setHours(4,0,0,0);
   if(new Date().getHours()<4)resetHour.setDate(resetHour.getDate()-1);
   const lastTime=parseInt(localStorage.getItem('hoshiyomi_last_ep_time')||'0');
@@ -1975,7 +2018,6 @@ function onBirthChange(){
     document.getElementById('p-zodiac').value=getZi(parseInt(m),parseInt(d));
   }
 }
-document.getElementById('dev-mode-chk').checked=devMode;
 
 if(user.name&&user.birth){
   document.getElementById('setup-card').style.display='none';

@@ -79,13 +79,22 @@ function callGeminiOnce(apiKey, body) {
 }
 
 app.post('/api/ai', async (req, res) => {
-  const { prompt, system } = req.body;
+  const { prompt, history, system } = req.body;
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return res.status(500).json({ error: 'APIキー未設定' });
-  if (!prompt) return res.status(400).json({ error: 'promptが必要' });
+
+  // historyがある場合はそれを使う、なければpromptから単発リクエスト
+  let contents;
+  if (history && Array.isArray(history) && history.length > 0) {
+    contents = history; // 会話履歴をそのまま渡す
+  } else if (prompt) {
+    contents = [{ role: 'user', parts: [{ text: prompt }] }];
+  } else {
+    return res.status(400).json({ error: 'promptまたはhistoryが必要' });
+  }
 
   const body = {
-    contents: [{ role: 'user', parts: [{ text: prompt }] }],
+    contents,
     generationConfig: { temperature: 0.9, maxOutputTokens: 2500 }
   };
   if (system) body.system_instruction = { parts: [{ text: system }] };

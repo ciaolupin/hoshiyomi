@@ -135,7 +135,7 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--surface);color:var
 .sign-note{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;font-style:italic}
 /* api setup */
 /* chat */
-.chat-msgs{display:flex;flex-direction:column;gap:9px;max-height:280px;overflow-y:auto;margin-bottom:11px}
+.chat-msgs{display:flex;flex-direction:column;gap:9px;max-height:380px;overflow-y:auto;margin-bottom:11px}
 .msg{padding:10px 13px;border-radius:14px;font-size:14px;line-height:1.75;max-width:90%}
 .msg.ai{background:var(--surface);border:0.5px solid var(--border);align-self:flex-start;font-style:italic}
 .msg.ai::before{content:"✦ 星詠み";display:block;font-family:'Cinzel',serif;font-size:9px;color:var(--myst);letter-spacing:0.15em;margin-bottom:5px;font-style:normal}
@@ -409,7 +409,9 @@ body{font-family:'Crimson Pro',Georgia,serif;background:var(--surface);color:var
     <!-- AI相談 -->
     <div class="pg" id="pg-ai">
       <div class="card">
-        <div class="ct"><span>✦</span> 星詠みAI相談室</div>
+        <div class="ct"><span>✦</span> 星詠みAI相談室
+          <button onclick="resetChat()" style="margin-left:auto;font-family:'Cinzel',serif;font-size:9px;padding:3px 10px;border:0.5px solid var(--border);border-radius:20px;background:none;color:var(--muted);cursor:pointer;letter-spacing:0.04em">会話をリセット</button>
+        </div>
         <div style="background:rgba(201,168,76,0.08);border:0.5px solid var(--border);border-radius:10px;padding:10px 13px;margin-bottom:12px;font-size:12px;line-height:1.7;color:var(--muted)">
           <span style="color:var(--gold);font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.08em">⚠ ご利用の前に</span><br>
           相談内容はAI処理のためGoogleのサーバーに送信されます。<strong style="color:var(--text)">氏名・住所・電話番号・学校名など個人を特定できる情報は入力しないでください。</strong>悩みの内容は「友達と喧嘩した」「進路が不安」など状況のみにとどめることをおすすめします。
@@ -1852,6 +1854,12 @@ async function askCompatAI(){
   await sendAI();
 }
 
+function resetChat(){
+  aiHistory=[];
+  const msgs=document.getElementById('chat-msgs');
+  msgs.innerHTML='<div class="msg ai">こんにちは。星詠みAIです。あなたの悩みや気になることを、なんでも話してくださいね。星の視点からやさしく一緒に考えます。</div>';
+}
+
 function askQ(q){document.getElementById('chat-in').value=q;sendAI();}
 
 // ─── AI相談 ─────────────────────────────
@@ -1872,26 +1880,37 @@ async function sendAI(){
 ・相談者を呼ぶときは「${userName}さん」か「あなた」のみ使う
 ・「乙女座さん」「牡羊座さん」などの星座名＋さんは絶対に使わない
 ・星座は占いの参考情報として使うだけで、呼びかけには使わない
+・前のやり取りの内容を踏まえて会話を続けること
 
 【返答のルール】
 ・10代〜20代の若者に寄り添い、共感を示す
-・100字以内で簡潔に、必ず句点（。）で終わること
+・150字程度、必ず句点（。）で終わること
 ・最後は前向きで温かい言葉で締めくくる
 
 相談者の名前：${userName}
 相談者の星座：${z.n}（占いの参考として使うだけ）`;
+
+  // 会話履歴に今回の質問を追加
+  aiHistory.push({role:'user',parts:[{text:q}]});
+  // 直近8往復分だけ送る（長くなりすぎ防止）
+  const recentHistory=aiHistory.slice(-16);
+
   try{
     const res=await fetch('/api/ai',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({prompt:q,system})
+      body:JSON.stringify({history:recentHistory, system})
     });
     const data=await res.json();
     if(data.error)throw new Error(data.error);
     const answer=data.text||'星々が今は静かに微笑んでいます。';
+    // 会話履歴にAIの返答を追加
+    aiHistory.push({role:'model',parts:[{text:answer}]});
     th.remove();
     const ai=document.createElement('div');ai.className='msg ai';ai.textContent=answer;msgs.appendChild(ai);
   }catch(e){
+    // エラーのとき履歴から最後の質問を削除
+    aiHistory.pop();
     th.remove();
     const err=document.createElement('div');err.className='msg ai';
     err.textContent='星との通信が途切れました。少し後でお試しください。';

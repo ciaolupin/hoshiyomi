@@ -1,5 +1,6 @@
 const express = require('express');
 const https = require('https');
+const path = require('path');
 const app = express();
 app.use(express.json());
 
@@ -11,6 +12,17 @@ app.use((req, res, next) => {
   next();
 });
 
+// ルート（/）へのアクセス → ローディングページを表示
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'loading.html'));
+});
+
+// /index.html → メインアプリ
+app.get('/index.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// その他の静的ファイル
 app.use(express.static('.'));
 
 app.get('/api/health', (req, res) => {
